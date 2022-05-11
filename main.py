@@ -26,10 +26,10 @@ async def echo(message: types.Message):
                 download(url, stream)
 
                 file_name = get_file_name(url)
-                file_name = str(file_name)+'mp4'
+                file_name = str(file_name)+'.mp4'
                 file_path = '/Users/a_krut/Desktop/Download_video_bot/videos/'+file_name
                 with open(file_path,'rb') as file:
-                    await message.reply_document(file, 'твое видео')
+                    await message.answer_document(file, file_name)
 
                 #await message.answer('Загрузка прошла успешно')
             except FileExistsError:

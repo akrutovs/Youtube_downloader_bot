@@ -16,5 +16,5 @@ def get_file_name(url):
 def download(url,stream):
     youtube_obj = YouTube(url)
     filename = youtube_obj.title
-    filename = str(filename) + 'mp4'
+    filename = str(filename) + '.mp4'
     stream.download(folder, filename)
