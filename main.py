@@ -1,6 +1,7 @@
 import logging
-import pytube
+import os
 from aiogram import Bot, Dispatcher, executor, types
+from Downloader import find_stream, download
 
 API_TOKEN = '5203623681:AAFZ2DC0-dBv1Ad_c5Wva45ffmJDj685wq0'
 # Configure logging
@@ -18,9 +19,16 @@ async def send_welcome(message: types.Message):
 async def echo(message: types.Message):
     try:
         if message.text[:5] =='https':
+            url = message.text
+            try:
+                stream = find_stream(url)
+                await message.answer('Идет обработка видео')
+                download(stream)
+                await message.answer('Загрузка прошла успешно')
+            except FileExistsError:
+                pass
 
 
-            await message.answer('ssilka')
         else:
             await message.answer('Бот принимает только ссылку')
 
