@@ -1,9 +1,8 @@
 import logging
-import os
 from aiogram import Bot, Dispatcher, executor, types
 from Downloader import find_stream, download, get_file_name
+from config import API_TOKEN
 
-API_TOKEN = '5203623681:AAFZ2DC0-dBv1Ad_c5Wva45ffmJDj685wq0'
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 # Initialize bot and dispatcher
