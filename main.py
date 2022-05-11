@@ -1,7 +1,7 @@
 import logging
 import os
 from aiogram import Bot, Dispatcher, executor, types
-from Downloader import find_stream, download
+from Downloader import find_stream, download, get_file_name
 
 API_TOKEN = '5203623681:AAFZ2DC0-dBv1Ad_c5Wva45ffmJDj685wq0'
 # Configure logging
@@ -23,8 +23,15 @@ async def echo(message: types.Message):
             try:
                 stream = find_stream(url)
                 await message.answer('Идет обработка видео')
-                download(stream)
-                await message.answer('Загрузка прошла успешно')
+                download(url, stream)
+
+                file_name = get_file_name(url)
+                file_name = str(file_name)+'mp4'
+                file_path = '/Users/a_krut/Desktop/Download_video_bot/videos/'+file_name
+                with open(file_path,'rb') as file:
+                    await message.reply_document(file, 'твое видео')
+
+                #await message.answer('Загрузка прошла успешно')
             except FileExistsError:
                 pass
 
