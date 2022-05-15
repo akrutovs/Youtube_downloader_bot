@@ -2,12 +2,32 @@ import logging
 from aiogram import Bot, Dispatcher, executor, types
 from Downloader import find_stream, download, get_file_name
 from config import API_TOKEN
+from aiogram.types import ContentType, File, Message
+import speech_recognition as sr
+
+recognizer = sr.Recognizer()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 # Initialize bot and dispatcher
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
+
+async def handle_file(file: File, file_name: str, path: str):
+
+    await bot.download_file(file_path=file.file_path, destination=f"{path}/{file_name}")
+
+@dp.message_handler(content_types=[ContentType.VOICE])
+async def voice_message_handler(message: Message):
+    voice = await message.voice.get_file()
+    path = "/Users/a_krut/Desktop/Download_video_bot/voices"
+    file_format = 'wav'
+    await handle_file(file=voice, file_name=f"{voice.file_id}.{file_format}", path=path)
+    file = sr.AudioFile(f"/Users/a_krut/Desktop/Download_video_bot/voices/{voice.file_id}.{file_format}")
+    with file as source:
+        audio = recognizer.record(source)
+    text = recognizer.recognize_google(audio)
+    await message.reply(text)
 
 @dp.message_handler(commands=['start', 'help'])
 async def send_welcome(message: types.Message):
